@@ -1,8 +1,8 @@
-package lk.tech.learntgbot.configuration;
+package lk.tech.tgcontrollerbot.configuration;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lk.tech.learntgbot.requests.HttpRequests;
+import lk.tech.tgcontrollerbot.requests.HttpRequests;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;

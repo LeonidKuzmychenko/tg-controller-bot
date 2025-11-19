@@ -1,4 +1,4 @@
-package lk.tech.learntgbot.utils;
+package lk.tech.tgcontrollerbot.utils;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

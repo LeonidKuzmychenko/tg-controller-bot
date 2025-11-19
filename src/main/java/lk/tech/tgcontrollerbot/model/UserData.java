@@ -1,4 +1,4 @@
-package lk.tech.learntgbot.model;
+package lk.tech.tgcontrollerbot.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

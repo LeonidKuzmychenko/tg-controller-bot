@@ -1,7 +1,7 @@
-package lk.tech.learntgbot.senders;
+package lk.tech.tgcontrollerbot.senders;
 
-import lk.tech.learntgbot.utils.KeyChatIdBiMap;
-import lk.tech.learntgbot.utils.SendMessages;
+import lk.tech.tgcontrollerbot.utils.KeyChatIdBiMap;
+import lk.tech.tgcontrollerbot.utils.SendMessages;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;

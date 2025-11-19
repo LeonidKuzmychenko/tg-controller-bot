@@ -1,4 +1,4 @@
-package lk.tech.learntgbot.model;
+package lk.tech.tgcontrollerbot.model;
 
 /**
  * Перечисление состояний диалога с пользователем в процессе регистрации.

@@ -1,8 +1,8 @@
-package lk.tech.learntgbot;
+package lk.tech.tgcontrollerbot;
 
-import lk.tech.learntgbot.requests.HttpRequests;
-import lk.tech.learntgbot.utils.KeyChatIdBiMap;
-import lk.tech.learntgbot.utils.SendMessages;
+import lk.tech.tgcontrollerbot.requests.HttpRequests;
+import lk.tech.tgcontrollerbot.utils.KeyChatIdBiMap;
+import lk.tech.tgcontrollerbot.utils.SendMessages;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

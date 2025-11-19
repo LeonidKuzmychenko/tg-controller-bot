@@ -1,6 +1,6 @@
-package lk.tech.learntgbot.configuration;
+package lk.tech.tgcontrollerbot.configuration;
 
-import lk.tech.learntgbot.CursorTelegramBot;
+import lk.tech.tgcontrollerbot.CursorTelegramBot;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.meta.TelegramBotsApi;

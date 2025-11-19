@@ -1,4 +1,4 @@
-package lk.tech.learntgbot.requests;
+package lk.tech.tgcontrollerbot.requests;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;

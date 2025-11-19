@@ -1,4 +1,4 @@
-package lk.tech.learntgbot.utils;
+package lk.tech.tgcontrollerbot.utils;
 
 import org.springframework.stereotype.Component;
 

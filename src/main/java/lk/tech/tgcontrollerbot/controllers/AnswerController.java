@@ -1,7 +1,7 @@
-package lk.tech.learntgbot.controllers;
+package lk.tech.tgcontrollerbot.controllers;
 
-import lk.tech.learntgbot.dto.OrderData;
-import lk.tech.learntgbot.senders.BotMessageSender;
+import lk.tech.tgcontrollerbot.dto.OrderData;
+import lk.tech.tgcontrollerbot.senders.BotMessageSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
