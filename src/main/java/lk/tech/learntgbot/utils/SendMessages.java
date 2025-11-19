@@ -10,7 +10,7 @@ import java.io.ByteArrayInputStream;
 
 public class SendMessages {
 
-    public static SendMessage of(Long chatId, String text){
+    public static SendMessage of(Long chatId, String text) {
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
         message.setText(text);

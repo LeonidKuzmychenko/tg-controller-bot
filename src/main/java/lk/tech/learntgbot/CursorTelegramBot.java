@@ -1,6 +1,6 @@
 package lk.tech.learntgbot;
 
-import lk.tech.learntgbot.senders.SocketMessageSender;
+import lk.tech.learntgbot.requests.HttpRequests;
 import lk.tech.learntgbot.utils.KeyChatIdBiMap;
 import lk.tech.learntgbot.utils.SendMessages;
 import lombok.extern.slf4j.Slf4j;
@@ -16,18 +16,17 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class CursorTelegramBot extends TelegramLongPollingBot {
 
     private final String botUsername;
-    private final SocketMessageSender socketMessageSender;
-    private final KeyChatIdBiMap chatIdBiMap;
+    private final HttpRequests httpRequests;
+    private final KeyChatIdBiMap keyChatIdBiMap;
 
     public CursorTelegramBot(
             @Value("${telegram.bot.token}") String botToken,
-            @Value("${telegram.bot.username}") String botUsername,
-            SocketMessageSender socketMessageSender, KeyChatIdBiMap chatIdBiMap
+            @Value("${telegram.bot.username}") String botUsername, HttpRequests httpRequests, KeyChatIdBiMap keyChatIdBiMap
     ) {
         super(new DefaultBotOptions(), botToken);
         this.botUsername = botUsername;
-        this.socketMessageSender = socketMessageSender;
-        this.chatIdBiMap = chatIdBiMap;
+        this.httpRequests = httpRequests;
+        this.keyChatIdBiMap = keyChatIdBiMap;
     }
 
     @Override
@@ -41,19 +40,15 @@ public class CursorTelegramBot extends TelegramLongPollingBot {
             if (update.hasMessage() && update.getMessage().hasText()) {
                 Long chatId = update.getMessage().getChatId();
                 String text = update.getMessage().getText();
+                log.info("onUpdateReceived chatId={}, text={}", chatId, text);
                 if ("/start".equals(text)) {
                     SendMessage message = SendMessages.of(chatId, "Приветствую тебя в боте по управлению компьютером");
                     execute(message);
+                    return;
                 }
-                if ("/shutdown".equals(text)) {
-                    socketMessageSender.sendToClient(chatIdBiMap.getKeyByChatId(chatId),"/shutdown");
-                    SendMessage message = SendMessages.of(chatId, "PC был выключен");
-                    execute(message);
-                }
-                if ("/screenshot".equals(text)) {
-                    socketMessageSender.sendToClient(chatIdBiMap.getKeyByChatId(chatId),"/screenshot");
-//                    SendMessage message = SendMessages.of(chatId, "PC был выключен");
-//                    execute(message);
+                if (text.startsWith("/")) {
+                    String key = keyChatIdBiMap.getKeyByChatId(chatId);
+                    httpRequests.send(key, text);
                 }
             }
         } catch (Exception e) {

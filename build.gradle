@@ -25,16 +25,12 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework:spring-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.telegram:telegrambots-spring-boot-starter:6.9.7.1'
-//        implementation 'org.telegram:telegrambots-abilities:6.9.7.1'
-//    implementation 'org.telegram:telegrambotsextensions:6.9.7.1'
     implementation 'com.github.ben-manes.caffeine:caffeine:3.1.8'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
