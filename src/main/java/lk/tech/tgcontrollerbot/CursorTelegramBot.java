@@ -56,7 +56,13 @@ public class CursorTelegramBot extends TelegramLongPollingBot {
                     Map<String,String> map = new HashMap<>();
                     map.put("/shutdown", "Выключить компьютер");
                     map.put("/screenshot", "Скриншот экрана");
+                    map.put("/info", "Комплектующие пк");
+                    map.put("/ip", "IP");
                     map.put("/load", "Нагрузка ПК");
+                    map.put("/processes", "Топ 10 процессов");
+                    map.put("/speedtest", "Тест скорости интернета");
+                    map.put("/temp", "Температуры");
+
                     String result = Flux.fromIterable(map.entrySet())
                             .map(e -> e.getKey() + " - " + e.getValue())
                             .collect(Collectors.joining("\n"))

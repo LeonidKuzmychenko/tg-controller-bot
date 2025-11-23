@@ -52,8 +52,23 @@ public class AnswerController {
             messageSender.sendMessageToTG(key, "Упс. Команду выполнить не удалось");
             return;
         }
+        if ("/info".equals(command)) {
+            messageSender.sendMessageToTG(key, "Комплектующие пк:\n" + result.getData());
+        }
+        if ("/ip".equals(command)) {
+            messageSender.sendMessageToTG(key, "IP:\n" + result.getData());
+        }
         if ("/load".equals(command)) {
             messageSender.sendMessageToTG(key, "Нагрузка на пк:\n" + result.getData());
+        }
+        if ("/processes".equals(command)) {
+            messageSender.sendMessageToTG(key, "Топ 10 процессов:\n" + result.getData());
+        }
+        if ("/speedtest".equals(command)) {
+            messageSender.sendMessageToTG(key, "Тест скорости интернета:\n" + result.getData());
+        }
+        if ("/temp".equals(command)) {
+            messageSender.sendMessageToTG(key, "Температуры:\n" + result.getData());
         }
 
     }
