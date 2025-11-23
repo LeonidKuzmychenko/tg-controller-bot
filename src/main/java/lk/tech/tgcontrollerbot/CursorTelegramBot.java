@@ -10,6 +10,12 @@ import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import reactor.core.publisher.Flux;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -42,7 +48,21 @@ public class CursorTelegramBot extends TelegramLongPollingBot {
                 String text = update.getMessage().getText();
                 log.info("onUpdateReceived chatId={}, text={}", chatId, text);
                 if ("/start".equals(text)) {
-                    SendMessage message = SendMessages.of(chatId, "Приветствую тебя в боте по управлению компьютером");
+                    SendMessage message = SendMessages.of(chatId, "Приветствую тебя в боте по управлению компьютером\nСписок существующих команд можно посмотреть вызвав /help");
+                    execute(message);
+                    return;
+                }
+                if ("/help".equals(text)) {
+                    Map<String,String> map = new HashMap<>();
+                    map.put("/shutdown", "Выключить компьютер");
+                    map.put("/screenshot", "Скриншот экрана");
+                    map.put("/load", "Нагрузка ПК");
+                    String result = Flux.fromIterable(map.entrySet())
+                            .map(e -> e.getKey() + " - " + e.getValue())
+                            .collect(Collectors.joining("\n"))
+                            .block();
+
+                    SendMessage message = SendMessages.of(chatId, "Список существующих команд:\n" + result);
                     execute(message);
                     return;
                 }
