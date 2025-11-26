@@ -21,19 +21,17 @@ public class BotMessageSender {
         this.chatIdBiMap = chatIdBiMap;
     }
 
-    public void sendMessageToTG(String clientKey, String text) throws TelegramApiException {
+    public void sendMessageToTG(String clientKey, String text) {
         Long chatId = chatIdBiMap.getChatIdByKey(clientKey);
 
-        SendMessage message = SendMessages.of(chatId, text);
         log.info("Sending message to chatId={}, text={}", chatId, text);
-        absSender.execute(message);
+        SendMessages.builder(chatId).text(text).send(absSender);
     }
 
-    public void sendRawPictureToTG(String clientKey, byte[] pngBytes, String caption) throws TelegramApiException {
+    public void sendRawPictureToTG(String clientKey, byte[] pngBytes, String text) throws TelegramApiException {
         Long chatId = chatIdBiMap.getChatIdByKey(clientKey);
 
-        SendDocument message = SendMessages.file(chatId, pngBytes, caption);
         log.info("Sending file to chatId={}", chatId);
-        absSender.execute(message);
+        SendMessages.builder(chatId).text(text).image(pngBytes).send(absSender);
     }
 }

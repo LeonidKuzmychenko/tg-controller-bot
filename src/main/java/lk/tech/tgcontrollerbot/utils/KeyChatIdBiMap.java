@@ -14,7 +14,7 @@ public class KeyChatIdBiMap {
     public KeyChatIdBiMap() {
         chatIdMap = new ConcurrentHashMap<>();
         keyMap = new ConcurrentHashMap<>();
-        add("CLIENT_001", 346843164L);
+//        add("f60b8c5b-c191-402f-90b7-21adabf874cc", 346843164L);
     }
 
     public void add(String key, Long chatId) {

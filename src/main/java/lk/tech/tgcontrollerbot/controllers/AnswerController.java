@@ -2,6 +2,7 @@ package lk.tech.tgcontrollerbot.controllers;
 
 import lk.tech.tgcontrollerbot.dto.ResultString;
 import lk.tech.tgcontrollerbot.senders.BotMessageSender;
+import lk.tech.tgcontrollerbot.utils.Commands;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -21,9 +22,10 @@ public class AnswerController {
             @PathVariable String key,
             @RequestParam String command,
             @RequestParam String status
-    ) throws TelegramApiException {
+    ) {
         log.info("Received text request for  key={}, command={}, status={}", key, command, status);
-        if ("Unknown".equals(status)){
+        String description = Commands.getDescription(command);
+        if ("Unknown".equals(status) || description == null){
             messageSender.sendMessageToTG(key, "Команды " + command + " не существует.\nСписок команда можно посмотреть вызвав /help");
             return;
         }
@@ -31,9 +33,7 @@ public class AnswerController {
             messageSender.sendMessageToTG(key, "Упс. Команду выполнить не удалось");
             return;
         }
-        if ("/shutdown".equals(command)) {
-            messageSender.sendMessageToTG(key, "PC был выключен");
-        }
+        messageSender.sendMessageToTG(key, description);
     }
 
     @PostMapping(value = "/object/{key}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -41,10 +41,11 @@ public class AnswerController {
             @PathVariable String key,
             @RequestParam String command,
             @RequestParam String status,
-            @RequestBody ResultString result
-    ) throws TelegramApiException {
+            @RequestBody(required = false) ResultString result
+    ) {
         log.info("Received object request for  key={}, command={}, status={}", key, command, status);
-        if ("Unknown".equals(status)){
+        String description = Commands.getDescription(command);
+        if ("Unknown".equals(status) || description == null){
             messageSender.sendMessageToTG(key, "Команды " + command + " не существует.\nСписок команда можно посмотреть вызвав /help");
             return;
         }
@@ -52,25 +53,7 @@ public class AnswerController {
             messageSender.sendMessageToTG(key, "Упс. Команду выполнить не удалось");
             return;
         }
-        if ("/info".equals(command)) {
-            messageSender.sendMessageToTG(key, "Комплектующие пк:\n" + result.getData());
-        }
-        if ("/ip".equals(command)) {
-            messageSender.sendMessageToTG(key, "IP:\n" + result.getData());
-        }
-        if ("/load".equals(command)) {
-            messageSender.sendMessageToTG(key, "Нагрузка на пк:\n" + result.getData());
-        }
-        if ("/processes".equals(command)) {
-            messageSender.sendMessageToTG(key, "Топ 10 процессов:\n" + result.getData());
-        }
-        if ("/speedtest".equals(command)) {
-            messageSender.sendMessageToTG(key, "Тест скорости интернета:\n" + result.getData());
-        }
-        if ("/temp".equals(command)) {
-            messageSender.sendMessageToTG(key, "Температуры:\n" + result.getData());
-        }
-
+        messageSender.sendMessageToTG(key, description + ":\n" + result.getData());
     }
 
     @PostMapping(value = "/image/{key}", consumes = MediaType.IMAGE_PNG_VALUE)

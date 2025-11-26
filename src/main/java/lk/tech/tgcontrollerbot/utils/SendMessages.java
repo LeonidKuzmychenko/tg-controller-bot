@@ -1,71 +1,67 @@
 package lk.tech.tgcontrollerbot.utils;
 
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
+import org.telegram.telegrambots.meta.bots.AbsSender;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.ByteArrayInputStream;
 
 
 public class SendMessages {
 
-    public static SendMessage of(Long chatId, String text) {
-        SendMessage message = new SendMessage();
-        message.setChatId(chatId);
-        message.setText(text);
-        message.setParseMode("HTML");
-        return message;
+    public static SendMessageBuilder builder(Long chatId) {
+        return new SendMessageBuilder(chatId);
     }
 
-//    public static SendPhoto photoBase64(Long chatId, String base64, String text) {
-//        // 1. Декодируем Base64 → byte[]
-//        byte[] pngBytes = Base64.getDecoder().decode(base64);
-//
-//        // 2. Формируем SendPhoto
-//        SendPhoto photo = new SendPhoto();
-//        photo.setChatId(chatId);
-//        photo.setCaption(text);
-//        photo.setParseMode("HTML");
-//
-//        // 3. Передаём как файл из памяти
-//        InputFile input = new InputFile(
-//                new ByteArrayInputStream(pngBytes),
-//                "image.png"
-//        );
-//
-//        photo.setPhoto(input);
-//
-//        return photo;
-//    }
+    public static class SendMessageBuilder {
 
-    public static SendPhoto photo(Long chatId, byte[] pngBytes, String caption) {
-        SendPhoto photo = new SendPhoto();
-        photo.setChatId(chatId);
-        photo.setCaption(caption);
-        photo.setParseMode("HTML");
+        private final Long chatId;
+        private String text;
+        private byte[] image;
 
-        InputFile file = new InputFile(
-                new ByteArrayInputStream(pngBytes),
-                "image.png"
-        );
+        public SendMessageBuilder(Long chatId) {
+            this.chatId = chatId;
+        }
 
-        photo.setPhoto(file);
-        return photo;
-    }
+        public SendMessageBuilder text(String text) {
+            this.text = text;
+            return this;
+        }
 
-    public static SendDocument file(Long chatId, byte[] pngBytes, String caption) {
-        SendDocument document = new SendDocument();
-        document.setChatId(chatId);
-        document.setCaption(caption);
-        document.setParseMode("HTML");
+        public SendMessageBuilder image(byte[] image) {
+            this.image = image;
+            return this;
+        }
 
-        InputFile file = new InputFile(
-                new ByteArrayInputStream(pngBytes),
-                "image.png"
-        );
+        public void send(AbsSender absSender) {
+            try {
+                if (image == null) {
+                    SendMessage message = new SendMessage();
+                    message.setChatId(chatId);
+                    message.setText(text);
+                    message.setParseMode("HTML");
+                    absSender.execute(message);
+                    return;
+                }
+                SendDocument document = new SendDocument();
+                document.setChatId(chatId);
+                document.setCaption(text);
+                document.setParseMode("HTML");
 
-        document.setDocument(file);
-        return document;
+                InputFile file = new InputFile(
+                        new ByteArrayInputStream(image),
+                        "image.png"
+                );
+
+                document.setDocument(file);
+                absSender.execute(document);
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

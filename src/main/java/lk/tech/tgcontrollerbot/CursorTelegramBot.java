@@ -1,6 +1,7 @@
 package lk.tech.tgcontrollerbot;
 
 import lk.tech.tgcontrollerbot.requests.HttpRequests;
+import lk.tech.tgcontrollerbot.utils.Commands;
 import lk.tech.tgcontrollerbot.utils.KeyChatIdBiMap;
 import lk.tech.tgcontrollerbot.utils.SendMessages;
 import lombok.extern.slf4j.Slf4j;
@@ -47,35 +48,61 @@ public class CursorTelegramBot extends TelegramLongPollingBot {
                 Long chatId = update.getMessage().getChatId();
                 String text = update.getMessage().getText();
                 log.info("onUpdateReceived chatId={}, text={}", chatId, text);
-                if ("/start".equals(text)) {
-                    SendMessage message = SendMessages.of(chatId, "Приветствую тебя в боте по управлению компьютером\nСписок существующих команд можно посмотреть вызвав /help");
-                    execute(message);
+                String clientKey = keyChatIdBiMap.getKeyByChatId(chatId);
+
+                if ("/start".equals(text) && clientKey == null) {
+                    SendMessages.builder(chatId)
+                            .text("Приветствую тебя в боте по управлению компьютером\nДля подключения бота к компьютеру необходимо скачать программу на Windows и подключить ее к боту с помощью команды /connect")
+                            .send(this);
                     return;
                 }
-                if ("/help".equals(text)) {
-                    Map<String,String> map = new HashMap<>();
-                    map.put("/shutdown", "Выключить компьютер");
-                    map.put("/screenshot", "Скриншот экрана");
-                    map.put("/info", "Комплектующие пк");
-                    map.put("/ip", "IP");
-                    map.put("/load", "Нагрузка ПК");
-                    map.put("/processes", "Топ 10 процессов");
-                    map.put("/speedtest", "Тест скорости интернета");
-                    map.put("/temp", "Температуры");
 
+                if ("/start".equals(text)) {
+                    SendMessages.builder(chatId)
+                            .text("Приветствую тебя в боте по управлению компьютером.\nВаш чат уже подключен к необходимой программе.\nСписок существующих команд можно посмотреть вызвав /help")
+                            .send(this);
+                    return;
+                }
+
+                if ("/connect".equals(text)) {
+                    SendMessages.builder(chatId)
+                            .text("После запуска Windows приложения у вас должна была появиться соответсвующая иконка в панели Пуск.\nНажмите по ней правой кнопкой мыши и выберите пункт 'Копировать ключ'.\nПосле этого ключ появится в буфере обмена.\nВставьте его в этот чат комбинацией CTRL+V и отправьте следующим сообщением.")
+                            .send(this);
+                    return;
+                }
+
+                if (clientKey == null) {
+                    SendMessages.builder(chatId)
+                            .text("За вашим чатом еще не закреплен ни один компьютер.\nДля подключения бота к компьютеру необходимо скачать программу на Windows и подключить ее к боту с помощью команды /connect")
+                            .send(this);
+                    return;
+                }
+
+                if ("/help".equals(text)) {
+                    Map<String, String> map = Commands.map();
                     String result = Flux.fromIterable(map.entrySet())
                             .map(e -> e.getKey() + " - " + e.getValue())
                             .collect(Collectors.joining("\n"))
                             .block();
-
-                    SendMessage message = SendMessages.of(chatId, "Список существующих команд:\n" + result);
-                    execute(message);
+                    SendMessages.builder(chatId)
+                            .text("Список существующих команд:\n" + result)
+                            .send(this);
                     return;
                 }
-                if (text.startsWith("/")) {
+
+                if (Commands.isExist(text)) {
+                    SendMessages.builder(chatId)
+                            .text("Мы получили вашу команду. Начинаем выполнение.")
+                            .send(this);
                     String key = keyChatIdBiMap.getKeyByChatId(chatId);
                     httpRequests.send(key, text);
+                    return;
                 }
+
+                SendMessages.builder(chatId)
+                        .text("Введенной Вами команды не существует.\nСписок существующих команд можно посмотреть вызвав /help")
+                        .send(this);
+
             }
         } catch (Exception e) {
             // Все остальные ошибки (логика приложения, валидация и т.д.)
