@@ -20,7 +20,7 @@ public class ServerConfiguration {
     @Bean
     public WebClient webClient() {
         return WebClient.builder()
-                .baseUrl("http://localhost:8484")
+                .baseUrl("http://localhost:8585/socket/")
                 .build();
     }
 

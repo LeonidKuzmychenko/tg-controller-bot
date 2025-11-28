@@ -1,7 +1,7 @@
 package lk.tech.tgcontrollerbot.controllers;
 
 import lk.tech.tgcontrollerbot.dto.ResultString;
-import lk.tech.tgcontrollerbot.senders.BotMessageSender;
+import lk.tech.tgcontrollerbot.services.BotMessageSender;
 import lk.tech.tgcontrollerbot.utils.Commands;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
