@@ -44,6 +44,9 @@ graalvmNative {
 
             // Оптимальный GC + стабильность
             buildArgs.add("--gc=serial")
+//            buildArgs.add("-H:+AllowIncompleteClasspath")
+//            buildArgs.add("--features=org.graalvm.nativeimage.hosted.Feature")
+
 //            buildArgs.add("--strict-image-heap")
 
             // HTTP/HTTPS + URL protocols
@@ -58,10 +61,10 @@ graalvmNative {
             buildArgs.add("--initialize-at-build-time=com.github.benmanes.caffeine")
 
             // TelegramBots — RUN TIME
-            buildArgs.add("--initialize-at-run-time=org.telegram")
+//            buildArgs.add("--initialize-at-run-time=org.telegram")
 
             // Reactor Netty — RUN TIME
-            buildArgs.add("--initialize-at-run-time=reactor.netty")
+//            buildArgs.add("--initialize-at-run-time=reactor.netty")
 
             // Подробный лог
             buildArgs.add("--verbose")

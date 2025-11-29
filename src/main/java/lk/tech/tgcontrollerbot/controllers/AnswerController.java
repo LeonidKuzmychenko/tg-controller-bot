@@ -6,8 +6,9 @@ import lk.tech.tgcontrollerbot.utils.Commands;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -62,7 +63,7 @@ public class AnswerController {
             @RequestParam String command,
             @RequestParam String status,
             @RequestBody byte[] bytes
-    ) throws TelegramApiException {
+    ) {
         log.info("Received image request for  key={}, command={}, status={}", key, command, status);
         if ("Unknown".equals(status)){
             messageSender.sendMessageToTG(key, "Команды " + command + " не существует.\nСписок команда можно посмотреть вызвав /help");
@@ -76,5 +77,39 @@ public class AnswerController {
             messageSender.sendRawPictureToTG(key, bytes, "Вот ваш скриншот");
         }
     }
+
+    @PostMapping(
+            value = "/images/{key}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public void receiveImages(
+            @PathVariable String key,
+            @RequestParam String command,
+            @RequestParam String status,
+            @RequestParam MultiValueMap<String, MultipartFile> files
+    ) {
+        log.info("Received {} images for key={}, command={}, status={}",
+                files==null?0:files.size(), key, command, status);
+
+        if ("Unknown".equals(status)) {
+            messageSender.sendMessageToTG(
+                    key,
+                    "Команды " + command + " не существует.\nСписок команд можно посмотреть вызвав /help"
+            );
+            return;
+        }
+
+        if (!"Success".equals(status) || files == null) {
+            messageSender.sendMessageToTG(key, "Упс. Команду выполнить не удалось");
+            return;
+        }
+
+        if ("/screenshot".equals(command)) {
+
+
+            messageSender.sendRawPicturesWithCaption(key, files);
+        }
+    }
+
 
 }
