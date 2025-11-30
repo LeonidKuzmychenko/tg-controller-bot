@@ -75,7 +75,7 @@ public class BotMessageSender {
         Long chatId = byClientKey.get().getChatId();
         log.info("Sending {} images with caption to chatId={}", files.size(), chatId);
 
-        List<InputMedia> mediaList = files.values()
+        List<byte[]> list = files.values()
                 .stream()
                 .flatMap(Collection::stream)
                 .flatMap(it -> {
@@ -84,13 +84,14 @@ public class BotMessageSender {
                     } catch (IOException e) {
                         return Stream.empty();
                     }
-                })
-                .map(image -> {
-                    InputMediaDocument media = new InputMediaDocument();
-                    media.setMedia(new ByteArrayInputStream(image), "screenshot.png");
-                    return (InputMedia) media;
-                })
-                .toList();
+                }).toList();
+
+        List<InputMedia> mediaList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            InputMediaDocument media = new InputMediaDocument();
+            media.setMedia(new ByteArrayInputStream(list.get(i)), "screenshot"+i+".png");
+            mediaList.add(media);
+        }
 
         SendMediaGroup group = new SendMediaGroup();
         group.setChatId(chatId);

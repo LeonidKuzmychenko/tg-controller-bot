@@ -57,27 +57,6 @@ public class AnswerController {
         messageSender.sendMessageToTG(key, description + ":\n" + result.getData());
     }
 
-    @PostMapping(value = "/image/{key}", consumes = MediaType.IMAGE_PNG_VALUE)
-    public void receiveImage(
-            @PathVariable String key,
-            @RequestParam String command,
-            @RequestParam String status,
-            @RequestBody byte[] bytes
-    ) {
-        log.info("Received image request for  key={}, command={}, status={}", key, command, status);
-        if ("Unknown".equals(status)){
-            messageSender.sendMessageToTG(key, "Команды " + command + " не существует.\nСписок команда можно посмотреть вызвав /help");
-            return;
-        }
-        if (!"Success".equals(status)){
-            messageSender.sendMessageToTG(key, "Упс. Команду выполнить не удалось");
-            return;
-        }
-        if ("/screenshot".equals(command)) {
-            messageSender.sendRawPictureToTG(key, bytes, "Вот ваш скриншот");
-        }
-    }
-
     @PostMapping(
             value = "/images/{key}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
@@ -105,8 +84,6 @@ public class AnswerController {
         }
 
         if ("/screenshot".equals(command)) {
-
-
             messageSender.sendRawPicturesWithCaption(key, files);
         }
     }
