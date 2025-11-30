@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import reactor.core.publisher.Mono;
 
@@ -50,11 +51,11 @@ public class CursorTelegramBot extends TelegramLongPollingBot {
         Long chatId = update.getMessage().getChatId();
         String text = update.getMessage().getText().trim();
 
-        log.info("onUpdateReceived chatId={}, text={}", chatId, text);
+        log.info("Bot Request: chatId={}, text={}", chatId, text);
 
         userDataService.getByChatId(chatId)
                 .switchIfEmpty(
-                        userDataService.create(chatId) // автоматическое создание новой записи
+                        userDataService.createNew(chatId) // автоматическое создание новой записи
                 )
                 .flatMap(userData -> processMessage(chatId, text, userData))
                 .onErrorResume(e -> {

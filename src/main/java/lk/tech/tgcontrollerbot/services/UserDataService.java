@@ -14,34 +14,34 @@ public class UserDataService {
     private final UserDataRepository repo;
 
     /**
-     * Найти пользователя по chat_id (уникальному полю)
+     * Найти пользователя по chat_id
      */
     public Mono<UserData> getByChatId(Long chatId) {
         return repo.findByChatId(chatId);
     }
 
     /**
-     * Создать нового пользователя, если записи нет
+     * Создать нового пользователя
      */
-    public Mono<UserData> create(Long chatId) {
-        UserData newUser = UserData.builder()
-                .chatId(chatId)
-                .state(UserState.IDLE)
-                .build();
-
-        return repo.save(newUser);
+    public Mono<UserData> createNew(Long chatId) {
+        return repo.save(
+                UserData.builder()
+                        .chatId(chatId)
+                        .state(UserState.IDLE)
+                        .build()
+        );
     }
 
     /**
-     * Получить пользователя или создать, если отсутствует
+     * Найти или создать
      */
     public Mono<UserData> getOrCreate(Long chatId) {
         return getByChatId(chatId)
-                .switchIfEmpty(create(chatId));
+                .switchIfEmpty(createNew(chatId));
     }
 
     /**
-     * Обновить clientKey и state пользователя
+     * Обновить clientKey + state
      */
     public Mono<UserData> updateState(Long chatId, String clientKey, UserState newState) {
         return getOrCreate(chatId)
@@ -56,9 +56,8 @@ public class UserDataService {
      * Найти по client_key (уникальному)
      */
     public Mono<UserData> getByClientKey(String clientKey) {
-        if (clientKey == null) {
-            return Mono.empty();
-        }
-        return repo.findByClientKey(clientKey);
+        return clientKey == null
+                ? Mono.empty()
+                : repo.findByClientKey(clientKey);
     }
 }
