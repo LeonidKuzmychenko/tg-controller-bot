@@ -6,9 +6,14 @@ import lk.tech.tgcontrollerbot.utils.Commands;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -24,7 +29,7 @@ public class AnswerController {
             @RequestParam String command,
             @RequestParam String status
     ) {
-        log.info("Received text request for  key={}, command={}, status={}", key, command, status);
+//        log.info("Received text request for  key={}, command={}, status={}", key, command, status);
         String description = Commands.getDescription(command);
         if ("Unknown".equals(status) || description == null){
             messageSender.sendMessageToTG(key, "Команды " + command + " не существует.\nСписок команда можно посмотреть вызвав /help");
@@ -44,7 +49,7 @@ public class AnswerController {
             @RequestParam String status,
             @RequestBody(required = false) ResultString result
     ) {
-        log.info("Received object request for  key={}, command={}, status={}", key, command, status);
+//        log.info("Received object request for  key={}, command={}, status={}", key, command, status);
         String description = Commands.getDescription(command);
         if ("Unknown".equals(status) || description == null){
             messageSender.sendMessageToTG(key, "Команды " + command + " не существует.\nСписок команда можно посмотреть вызвав /help");
@@ -61,32 +66,35 @@ public class AnswerController {
             value = "/images/{key}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
-    public void receiveImages(
+    public Mono<Void> receiveImages(
             @PathVariable String key,
             @RequestParam String command,
             @RequestParam String status,
-            @RequestParam MultiValueMap<String, MultipartFile> files
+            @RequestPart("files") Flux<FilePart> files
     ) {
-        log.info("Received {} images for key={}, command={}, status={}",
-                files==null?0:files.size(), key, command, status);
+//        log.info("Received {} images for key={}, command={}, status={}",
+//                files == null ? 0 : files.size(), key, command, status);
 
         if ("Unknown".equals(status)) {
             messageSender.sendMessageToTG(
                     key,
                     "Команды " + command + " не существует.\nСписок команд можно посмотреть вызвав /help"
             );
-            return;
+            return Mono.empty();
         }
 
         if (!"Success".equals(status) || files == null) {
             messageSender.sendMessageToTG(key, "Упс. Команду выполнить не удалось");
-            return;
+            return Mono.empty();
         }
 
         if ("/screenshot".equals(command)) {
-            messageSender.sendRawPicturesWithCaption(key, files);
+            return messageSender.sendRawPicturesWithCaption(key, files);
         }
+
+        return Mono.empty();
     }
+
 
 
 }

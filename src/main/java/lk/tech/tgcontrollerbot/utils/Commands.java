@@ -32,15 +32,6 @@ public enum Commands {
                 ));
     }
 
-    public static String getCommand(String command) {
-        for (Commands commands : Commands.values()) {
-            if (commands.getCommand().equals(command)) {
-                return commands.getCommand();
-            }
-        }
-        return null;
-    }
-
     public static String getDescription(String command) {
         for (Commands commands : Commands.values()) {
             if (commands.getCommand().equals(command)) {

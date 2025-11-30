@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    chat_id BIGINT UNIQUE,
+    client_key TEXT UNIQUE,
+    state TEXT NOT NULL DEFAULT 'IDLE'
+);

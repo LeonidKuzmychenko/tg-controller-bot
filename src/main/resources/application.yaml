@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: learn-tg-bot
+  sql:
+    init:
+      mode: always
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/postgres?currentSchema=tgcontrolbot
+    username: postgres
+    password: postgres
+    pool:
+      initial-size: 5
+      max-size: 20
+telegram:
+  bot:
+    token: 8311135414:AAGGjH2Btopbi2FOl5w2DI87yY4CDcIKbaY
+    username: cursor_sobaka_bot
+
+logging:
+  level:
+    root: info
+
+server:
+  port: 8282
