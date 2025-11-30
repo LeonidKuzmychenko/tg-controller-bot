@@ -27,9 +27,7 @@ public class AnswerController {
             @RequestParam String status
     ) {
         return preCheck(key, command, status)
-                .flatMap(description ->
-                        messageSender.sendMessageToTG(key, description)
-                );
+                .flatMap(description -> messageSender.sendMessageToTG(key, description));
     }
 
     // -------------------- JSON --------------------
@@ -41,9 +39,7 @@ public class AnswerController {
             @RequestBody ResultString result
     ) {
         return preCheck(key, command, status)
-                .flatMap(description ->
-                        messageSender.sendMessageToTG(key, description + ":\n" + result.getData())
-                );
+                .flatMap(description -> messageSender.sendMessageToTG(key, description + ":\n" + result.getData()));
     }
 
     // -------------------- IMAGES --------------------
@@ -55,9 +51,7 @@ public class AnswerController {
             @RequestPart("files") Flux<FilePart> files
     ) {
         return preCheck(key, command, status)
-                .flatMap(description ->
-                        messageSender.sendRawPicturesWithCaption(key, files, description + ":")
-                );
+                .flatMap(description -> messageSender.sendRawPicturesWithCaption(key, files, description + ":"));
     }
 
     // ==================================================================
