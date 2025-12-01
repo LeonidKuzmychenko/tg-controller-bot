@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.internal.relocated.kotlin.metadata.internal.metadata.deserialization.VersionRequirementTable.Companion.create
-
 plugins {
     java
     id("org.springframework.boot") version "3.5.7"
@@ -43,54 +41,11 @@ graalvmNative {
     toolchainDetection.set(true)
 
     binaries {
-        // ----------------------------------------------------
-        // WINDOWS BUILD (safe, no DNS)
-        // ----------------------------------------------------
-        create("windowsMain") {
-            imageName.set("tg-controller-bot-windows")
+        named("main") {
+            imageName.set("tg-controller-bot")
             fallback.set(false)
 
             buildArgs.add("--gc=serial")
-
-            buildArgs.add("--enable-http")
-            buildArgs.add("--enable-https")
-            buildArgs.add("--enable-url-protocols=http,https")
-
-            // Netty must load at runtime on Windows
-            listOf(
-                "io.netty",
-                "io.netty.buffer",
-                "io.netty.channel",
-                "io.netty.handler",
-                "io.netty.resolver",
-                "io.netty.transport",
-                "io.netty.util",
-                "io.netty.util.internal"
-            ).forEach { pkg ->
-                buildArgs.add("--initialize-at-run-time=$pkg")
-            }
-
-            // Spring buffer fixes
-            buildArgs.add("--initialize-at-run-time=org.springframework.core.io.buffer")
-
-            buildArgs.add("--enable-all-security-services")
-            buildArgs.add("--enable-native-access=ALL-UNNAMED")
-
-            // ❗ Windows: disable DNS SPI
-            buildArgs.add("-Djdk.internal.dns.disableSystemDNS=true")
-            buildArgs.add("-Dio.netty.resolver.dns.native=disabled")
-
-            buildArgs.add("--verbose")
-        }
-
-        // ----------------------------------------------------
-        // LINUX BUILD (docker)
-        // ----------------------------------------------------
-        create("linuxMain") {
-            imageName.set("tg-controller-bot-linux")
-            fallback.set(false)
-
-            buildArgs.add("--gc=G1")
 
             buildArgs.add("--enable-http")
             buildArgs.add("--enable-https")
@@ -119,8 +74,10 @@ graalvmNative {
             // It is stable and required
 
             buildArgs.add("--verbose")
+
+            imageName.set("tg-controller-bot")
+            fallback.set(false)
         }
     }
 }
-
 

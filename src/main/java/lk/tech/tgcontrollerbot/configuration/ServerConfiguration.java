@@ -24,16 +24,20 @@ public class ServerConfiguration {
     }
 
     @Bean("webClient")
-    public WebClient webClient() {
+    public WebClient webClient(@Value("${url.socket}") String url,
+                               ExchangeFilterFunction logFilter) {
         return WebClient.builder()
-                .baseUrl("http://localhost:8484/")
+                .baseUrl(url)
+                .filter(logFilter)
                 .build();
     }
 
     @Bean("webClientTelegram")
-    public WebClient webClientTelegram(@Value("${telegram.bot.token}") String botToken, ExchangeFilterFunction logFilter) {
+    public WebClient webClientTelegram(@Value("${url.telegram}") String url,
+                                       @Value("${telegram.bot.token}") String botToken,
+                                       ExchangeFilterFunction logFilter) {
         return WebClient.builder()
-                .baseUrl("https://api.telegram.org/bot" + botToken)
+                .baseUrl(url + botToken)
                 .filter(logFilter)
                 .build();
     }
