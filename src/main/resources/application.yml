@@ -1,17 +1,22 @@
 spring:
+  jackson:
+    time-zone: Europe/Kyiv
   application:
     name: learn-tg-bot
   sql:
     init:
       mode: always
   r2dbc:
-#    url: r2dbc:postgresql://localhost:5432/postgres?currentSchema=tgcontrolbot
     url: r2dbc:postgresql://postgres:5432/tgdb
+#    url: r2dbc:postgresql://localhost:5432/tgdb
     username: postgres
     password: postgres
     pool:
       initial-size: 5
       max-size: 20
+    properties:
+      options:
+        timezone: Europe/Kyiv
 
 telegram:
   bot:

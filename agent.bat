@@ -35,10 +35,11 @@ if not exist "%APP_JAR%" (
 )
 
 echo.
-echo Running app with GraalVM agent...
+echo Running app with GraalVM agent and timezone Europe/Kyiv...
 echo.
 
 "%JAVA_BIN%" ^
+  -Duser.timezone=Europe/Kyiv ^
   -agentlib:native-image-agent=config-output-dir=%OUT_DIR% ^
   -jar "%APP_JAR%"
 

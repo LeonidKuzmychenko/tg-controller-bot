@@ -32,15 +32,7 @@ public class ServerConfiguration {
                 .build();
     }
 
-    @Bean("webClientTelegram")
-    public WebClient webClientTelegram(@Value("${url.telegram}") String url,
-                                       @Value("${telegram.bot.token}") String botToken,
-                                       ExchangeFilterFunction logFilter) {
-        return WebClient.builder()
-                .baseUrl(url + botToken)
-                .filter(logFilter)
-                .build();
-    }
+
 
     @Bean
     public HttpRequests jsonPlaceholderClient(@Qualifier("webClient") WebClient webClient) {
@@ -51,14 +43,7 @@ public class ServerConfiguration {
         return factory.createClient(HttpRequests.class);
     }
 
-    @Bean
-    public TelegramHttpClient telegramHttpClient(@Qualifier("webClientTelegram") WebClient webClient) {
-        HttpServiceProxyFactory factory = HttpServiceProxyFactory
-                .builderFor(WebClientAdapter.create(webClient))
-                .build();
 
-        return factory.createClient(TelegramHttpClient.class);
-    }
 
     @Bean
     public ExchangeFilterFunction logFilter() {

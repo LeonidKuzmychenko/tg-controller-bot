@@ -45,39 +45,40 @@ graalvmNative {
             imageName.set("tg-controller-bot")
             fallback.set(false)
 
+            // ===== GC (только serial или epsilon) =====
             buildArgs.add("--gc=serial")
 
+            // ===== Разрешённые протоколы =====
             buildArgs.add("--enable-http")
             buildArgs.add("--enable-https")
             buildArgs.add("--enable-url-protocols=http,https,dns")
 
-            // Linux: allow Netty DNS + epoll
+            // ===== Netty — строго initialize-at-run-time =====
             listOf(
                 "io.netty",
                 "io.netty.buffer",
                 "io.netty.channel",
                 "io.netty.handler",
                 "io.netty.resolver",
+                "io.netty.resolver.dns",
                 "io.netty.transport",
                 "io.netty.util",
-                "io.netty.util.internal"
+                "io.netty.util.internal",
+                "org.springframework.core.io.buffer"
             ).forEach { pkg ->
                 buildArgs.add("--initialize-at-run-time=$pkg")
             }
 
-            buildArgs.add("--initialize-at-run-time=org.springframework.core.io.buffer")
-
+            // ===== Security / Crypto =====
             buildArgs.add("--enable-all-security-services")
+
+            // ===== Native access =====
             buildArgs.add("--enable-native-access=ALL-UNNAMED")
 
-            // Linux: DO NOT disable DNS
-            // It is stable and required
-
+            // ===== Логирование при сборке =====
             buildArgs.add("--verbose")
-
-            imageName.set("tg-controller-bot")
-            fallback.set(false)
         }
     }
 }
+
 

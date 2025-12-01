@@ -425,6 +425,9 @@
       "type": "io.netty.handler.ssl.SslHandler"
     },
     {
+      "type": "io.netty.handler.timeout.ReadTimeoutHandler"
+    },
+    {
       "type": "io.netty.incubator.channel.uring.IOUring"
     },
     {
@@ -1418,17 +1421,7 @@
           "parameterTypes": []
         },
         {
-          "name": "telegramHttpClient",
-          "parameterTypes": [
-            "org.springframework.web.reactive.function.client.WebClient"
-          ]
-        },
-        {
           "name": "webClient",
-          "parameterTypes": []
-        },
-        {
-          "name": "webClientTelegram",
           "parameterTypes": [
             "java.lang.String",
             "org.springframework.web.reactive.function.client.ExchangeFilterFunction"
@@ -1475,6 +1468,84 @@
     },
     {
       "type": "lk.tech.tgcontrollerbot.configuration.ServerConfiguration$$SpringCGLIB$$FastClass$$1",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.Class"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "lk.tech.tgcontrollerbot.configuration.TelegramWebConfiguration",
+      "methods": [
+        {
+          "name": "telegramConnectionProvider",
+          "parameterTypes": []
+        },
+        {
+          "name": "telegramHttpClient",
+          "parameterTypes": [
+            "reactor.netty.resources.ConnectionProvider"
+          ]
+        },
+        {
+          "name": "telegramHttpClientWeb",
+          "parameterTypes": [
+            "org.springframework.web.reactive.function.client.WebClient"
+          ]
+        },
+        {
+          "name": "webClientTelegram",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.String",
+            "reactor.netty.http.client.HttpClient",
+            "org.springframework.web.reactive.function.client.ExchangeFilterFunction"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "lk.tech.tgcontrollerbot.configuration.TelegramWebConfiguration$$SpringCGLIB$$0",
+      "fields": [
+        {
+          "name": "$$beanFactory"
+        },
+        {
+          "name": "CGLIB$CALLBACK_FILTER"
+        },
+        {
+          "name": "CGLIB$FACTORY_DATA"
+        }
+      ],
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "CGLIB$SET_STATIC_CALLBACKS",
+          "parameterTypes": [
+            "org.springframework.cglib.proxy.Callback[]"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "lk.tech.tgcontrollerbot.configuration.TelegramWebConfiguration$$SpringCGLIB$$FastClass$$0",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.Class"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "lk.tech.tgcontrollerbot.configuration.TelegramWebConfiguration$$SpringCGLIB$$FastClass$$1",
       "methods": [
         {
           "name": "<init>",
@@ -1582,7 +1653,7 @@
       ]
     },
     {
-      "type": "lk.tech.tgcontrollerbot.model.UserData_Accessor_n5gg7r",
+      "type": "lk.tech.tgcontrollerbot.model.UserData_Accessor_xbrq3l",
       "methods": [
         {
           "name": "<init>",
@@ -1593,7 +1664,7 @@
       ]
     },
     {
-      "type": "lk.tech.tgcontrollerbot.model.UserData_Instantiator_n5gg7r",
+      "type": "lk.tech.tgcontrollerbot.model.UserData_Instantiator_xbrq3l",
       "methods": [
         {
           "name": "<init>",
@@ -1616,9 +1687,8 @@
         {
           "name": "<init>",
           "parameterTypes": [
-            "org.telegram.telegrambots.meta.bots.AbsSender",
             "lk.tech.tgcontrollerbot.services.UserDataService",
-            "lk.tech.tgcontrollerbot.requests.TelegramHttpClient"
+            "lk.tech.tgcontrollerbot.services.tg.TelegramMessageService"
           ]
         }
       ]
@@ -1631,6 +1701,47 @@
           "parameterTypes": [
             "lk.tech.tgcontrollerbot.repositories.UserDataRepository"
           ]
+        }
+      ]
+    },
+    {
+      "type": "lk.tech.tgcontrollerbot.services.tg.RateLimitExecutor",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "lk.tech.tgcontrollerbot.services.tg.TelegramErrorHandler",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "lk.tech.tgcontrollerbot.services.tg.TelegramMessageService",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "lk.tech.tgcontrollerbot.requests.TelegramHttpClient",
+            "lk.tech.tgcontrollerbot.services.tg.TelegramMultipartBuilder",
+            "lk.tech.tgcontrollerbot.services.tg.RateLimitExecutor",
+            "lk.tech.tgcontrollerbot.services.tg.TelegramErrorHandler"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "lk.tech.tgcontrollerbot.services.tg.TelegramMultipartBuilder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
         }
       ]
     },
@@ -2669,6 +2780,12 @@
         {
           "name": "<init>",
           "parameterTypes": []
+        },
+        {
+          "name": "setTimeZone",
+          "parameterTypes": [
+            "java.util.TimeZone"
+          ]
         }
       ]
     },
@@ -2847,6 +2964,10 @@
         },
         {
           "name": "getPool",
+          "parameterTypes": []
+        },
+        {
+          "name": "getProperties",
           "parameterTypes": []
         },
         {
@@ -6418,6 +6539,9 @@
       "type": "reactor.netty.http.client.HttpClient"
     },
     {
+      "type": "reactor.netty.http.client.HttpClientConnect"
+    },
+    {
       "type": "reactor.netty.http.server.HttpServer"
     },
     {
@@ -6439,16 +6563,31 @@
       "type": "reactor.netty.internal.shaded.reactor.pool.SimpleDequePool$QueuePoolRecyclerInner"
     },
     {
+      "type": "reactor.netty.resources.ConnectionProvider"
+    },
+    {
+      "type": "reactor.netty.resources.DefaultPooledConnectionProvider"
+    },
+    {
       "type": "reactor.netty.resources.DefaultPooledConnectionProvider$PooledConnectionAllocator$PooledConnectionInitializer"
     },
     {
+      "type": "reactor.netty.resources.PooledConnectionProvider"
+    },
+    {
       "type": "reactor.netty.tcp.SslProvider$SslReadHandler"
+    },
+    {
+      "type": "reactor.netty.transport.ClientTransport"
     },
     {
       "type": "reactor.netty.transport.ServerTransport$Acceptor"
     },
     {
       "type": "reactor.netty.transport.ServerTransport$AcceptorInitializer"
+    },
+    {
+      "type": "reactor.netty.transport.Transport"
     },
     {
       "type": "reactor.netty.transport.TransportConfig$TransportChannelInitializer"
@@ -6476,6 +6615,9 @@
     },
     {
       "type": "reactor.tools.agent.ReactorDebugAgent"
+    },
+    {
+      "type": "reactor.util.annotation.Incubating"
     },
     {
       "type": "reactor.util.annotation.Nullable"
@@ -7282,6 +7424,9 @@
       "glob": "lk/tech/tgcontrollerbot/configuration/ServerConfiguration.class"
     },
     {
+      "glob": "lk/tech/tgcontrollerbot/configuration/TelegramWebConfiguration.class"
+    },
+    {
       "glob": "lk/tech/tgcontrollerbot/controllers/AnswerController.class"
     },
     {
@@ -7295,6 +7440,18 @@
     },
     {
       "glob": "lk/tech/tgcontrollerbot/services/UserDataService.class"
+    },
+    {
+      "glob": "lk/tech/tgcontrollerbot/services/tg/RateLimitExecutor.class"
+    },
+    {
+      "glob": "lk/tech/tgcontrollerbot/services/tg/TelegramErrorHandler.class"
+    },
+    {
+      "glob": "lk/tech/tgcontrollerbot/services/tg/TelegramMessageService.class"
+    },
+    {
+      "glob": "lk/tech/tgcontrollerbot/services/tg/TelegramMultipartBuilder.class"
     },
     {
       "glob": "logback-spring.groovy"

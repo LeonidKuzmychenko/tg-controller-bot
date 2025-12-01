@@ -6,7 +6,6 @@ import org.springframework.http.codec.multipart.FilePart;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -14,31 +13,38 @@ import java.nio.file.StandardOpenOption;
 @Slf4j
 public class TempFileManager {
 
-    public static Mono<File> saveToTemp(FilePart filePart) {
+    /**
+     * Создаёт временный файл и сохраняет туда FilePart реактивно.
+     * Возвращает Path временного файла.
+     */
+    public static Mono<Path> saveToTemp(FilePart filePart) {
         return Mono.fromCallable(() -> {
-                    Path temp = Files.createTempFile("upload_", ".png");
+                    Path temp = Files.createTempFile("", ".png");
                     log.info("Temp file created: {}", temp);
-                    return temp.toFile();
+                    return temp;
                 })
-                .subscribeOn(Schedulers.boundedElastic())
-                .flatMap(tempFile ->
+                .subscribeOn(Schedulers.boundedElastic()) // создание temp-файла = блокирующая операция
+                .flatMap(tempPath ->
                         DataBufferUtils.write(
                                         filePart.content(),
-                                        tempFile.toPath(),
+                                        tempPath,
                                         StandardOpenOption.WRITE
                                 )
-                                .doOnError(e -> log.error("Failed writing {} → {}", filePart.filename(), tempFile, e))
-                                .doOnSuccess(_ -> log.info("Saved FilePart {} to {}", filePart.filename(), tempFile))
-                                .thenReturn(tempFile)
+                                .doOnError(e -> log.error("Failed writing {} → {}", tempPath.getFileName().toString(), tempPath, e))
+                                .doOnSuccess(_ -> log.info("Saved FilePart {} to {}", tempPath.getFileName().toString(), tempPath))
+                                .thenReturn(tempPath)
                 );
     }
 
-    public static void safeDelete(File file) {
+    /**
+     * Безопасное удаление временного файла по Path.
+     */
+    public static void safeDelete(Path path) {
         try {
-            Files.deleteIfExists(file.toPath());
-            log.debug("Temp file deleted: {}", file);
+            Files.deleteIfExists(path);
+            log.debug("Temp file deleted: {}", path);
         } catch (Exception e) {
-            log.error("Failed to delete temp file {}", file, e);
+            log.error("Failed to delete temp file {}", path, e);
         }
     }
 }
