@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.internal.relocated.kotlin.metadata.internal.metadata.deserialization.VersionRequirementTable.Companion.create
+
 plugins {
     java
     id("org.springframework.boot") version "3.5.7"
@@ -41,48 +43,84 @@ graalvmNative {
     toolchainDetection.set(true)
 
     binaries {
-        named("main") {
-            imageName.set("tg-controller-bot")
+        // ----------------------------------------------------
+        // WINDOWS BUILD (safe, no DNS)
+        // ----------------------------------------------------
+        create("windowsMain") {
+            imageName.set("tg-controller-bot-windows")
             fallback.set(false)
 
-            // 1) GC: serial — единственный стабильный на Windows
             buildArgs.add("--gc=serial")
 
-            // 2) Поддержка нужных протоколов (DNS обязателен!)
+            buildArgs.add("--enable-http")
+            buildArgs.add("--enable-https")
+            buildArgs.add("--enable-url-protocols=http,https")
+
+            // Netty must load at runtime on Windows
+            listOf(
+                "io.netty",
+                "io.netty.buffer",
+                "io.netty.channel",
+                "io.netty.handler",
+                "io.netty.resolver",
+                "io.netty.transport",
+                "io.netty.util",
+                "io.netty.util.internal"
+            ).forEach { pkg ->
+                buildArgs.add("--initialize-at-run-time=$pkg")
+            }
+
+            // Spring buffer fixes
+            buildArgs.add("--initialize-at-run-time=org.springframework.core.io.buffer")
+
+            buildArgs.add("--enable-all-security-services")
+            buildArgs.add("--enable-native-access=ALL-UNNAMED")
+
+            // ❗ Windows: disable DNS SPI
+            buildArgs.add("-Djdk.internal.dns.disableSystemDNS=true")
+            buildArgs.add("-Dio.netty.resolver.dns.native=disabled")
+
+            buildArgs.add("--verbose")
+        }
+
+        // ----------------------------------------------------
+        // LINUX BUILD (docker)
+        // ----------------------------------------------------
+        create("linuxMain") {
+            imageName.set("tg-controller-bot-linux")
+            fallback.set(false)
+
+            buildArgs.add("--gc=G1")
+
             buildArgs.add("--enable-http")
             buildArgs.add("--enable-https")
             buildArgs.add("--enable-url-protocols=http,https,dns")
 
-            // 3) JDK DNS SPI инициализируется на build-time
-            //    иначе Windows падает при первой DNS операции
-            buildArgs.add("--initialize-at-build-time=sun.net.dns")
+            // Linux: allow Netty DNS + epoll
+            listOf(
+                "io.netty",
+                "io.netty.buffer",
+                "io.netty.channel",
+                "io.netty.handler",
+                "io.netty.resolver",
+                "io.netty.transport",
+                "io.netty.util",
+                "io.netty.util.internal"
+            ).forEach { pkg ->
+                buildArgs.add("--initialize-at-run-time=$pkg")
+            }
 
-            // 4) Netty ВСЕГДА только runtime-init (иначе гарантированный SEGFAULT/GC crash)
-            buildArgs.add("--initialize-at-run-time=io.netty")
-            buildArgs.add("--initialize-at-run-time=io.netty.buffer")
-            buildArgs.add("--initialize-at-run-time=io.netty.channel")
-            buildArgs.add("--initialize-at-run-time=io.netty.handler")
-            buildArgs.add("--initialize-at-run-time=io.netty.resolver")
-            buildArgs.add("--initialize-at-run-time=io.netty.transport")
-            buildArgs.add("--initialize-at-run-time=io.netty.util")
-            buildArgs.add("--initialize-at-run-time=io.netty.util.internal")
-            buildArgs.add("--initialize-at-run-time=io.netty.util.internal.shaded")
-
-            // 5) Spring DataBuffer — runtime init (иначе invalid hub type)
             buildArgs.add("--initialize-at-run-time=org.springframework.core.io.buffer")
 
-            // 6) Crypto / SSL / HTTPS services (Spring Boot 3.5.x)
             buildArgs.add("--enable-all-security-services")
-
-            // 7) Разрешаем R2DBC PostgreSQL SPI/native access
             buildArgs.add("--enable-native-access=ALL-UNNAMED")
 
-            // 8) Полное отключение JDK DNS SPI
-            //    (ВАЖНО: только через -D <prop>=value — с пробелом!)
-            buildArgs.add("-D jdk.internal.dns.disableSystemDNS=true")
+            // Linux: DO NOT disable DNS
+            // It is stable and required
 
-            // 9) Отладочный вывод
             buildArgs.add("--verbose")
         }
     }
 }
+
+

@@ -422,7 +422,16 @@
       "type": "io.netty.handler.codec.http.HttpServerCodec"
     },
     {
+      "type": "io.netty.handler.ssl.SslHandler"
+    },
+    {
       "type": "io.netty.incubator.channel.uring.IOUring"
+    },
+    {
+      "type": "io.netty.incubator.codec.http3.Http3"
+    },
+    {
+      "type": "io.netty.internal.tcnative.SSLContext"
     },
     {
       "type": "io.netty.resolver.dns.Cache$Entries"
@@ -786,7 +795,13 @@
       "type": "java.lang.Character[]"
     },
     {
-      "type": "java.lang.Class"
+      "type": "java.lang.Class",
+      "methods": [
+        {
+          "name": "getRecordComponents",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "java.lang.ClassLoader",
@@ -927,6 +942,19 @@
     },
     {
       "type": "java.lang.reflect.Proxy"
+    },
+    {
+      "type": "java.lang.reflect.RecordComponent",
+      "methods": [
+        {
+          "name": "getName",
+          "parameterTypes": []
+        },
+        {
+          "name": "getType",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "java.lang.reflect.Type"
@@ -1147,6 +1175,40 @@
       "type": "javax.naming.ldap.LdapContext"
     },
     {
+      "type": "javax.net.ssl.SSLEngine",
+      "methods": [
+        {
+          "name": "getApplicationProtocol",
+          "parameterTypes": []
+        },
+        {
+          "name": "getHandshakeApplicationProtocol",
+          "parameterTypes": []
+        },
+        {
+          "name": "getHandshakeApplicationProtocolSelector",
+          "parameterTypes": []
+        },
+        {
+          "name": "setHandshakeApplicationProtocolSelector",
+          "parameterTypes": [
+            "java.util.function.BiFunction"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "javax.net.ssl.SSLParameters",
+      "methods": [
+        {
+          "name": "setApplicationProtocols",
+          "parameterTypes": [
+            "java.lang.String[]"
+          ]
+        }
+      ]
+    },
+    {
       "type": "javax.sql.DataSource"
     },
     {
@@ -1348,12 +1410,29 @@
           ]
         },
         {
+          "name": "logFilter",
+          "parameterTypes": []
+        },
+        {
           "name": "objectMapper",
           "parameterTypes": []
         },
         {
+          "name": "telegramHttpClient",
+          "parameterTypes": [
+            "org.springframework.web.reactive.function.client.WebClient"
+          ]
+        },
+        {
           "name": "webClient",
           "parameterTypes": []
+        },
+        {
+          "name": "webClientTelegram",
+          "parameterTypes": [
+            "java.lang.String",
+            "org.springframework.web.reactive.function.client.ExchangeFilterFunction"
+          ]
         }
       ]
     },
@@ -1473,6 +1552,19 @@
       ]
     },
     {
+      "type": "lk.tech.tgcontrollerbot.dto.SendMessageRequest",
+      "methods": [
+        {
+          "name": "chat_id",
+          "parameterTypes": []
+        },
+        {
+          "name": "text",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "lk.tech.tgcontrollerbot.model.UserData",
       "fields": [
         {
@@ -1490,7 +1582,7 @@
       ]
     },
     {
-      "type": "lk.tech.tgcontrollerbot.model.UserData_Accessor_a1zqyv",
+      "type": "lk.tech.tgcontrollerbot.model.UserData_Accessor_n5gg7r",
       "methods": [
         {
           "name": "<init>",
@@ -1501,7 +1593,7 @@
       ]
     },
     {
-      "type": "lk.tech.tgcontrollerbot.model.UserData_Instantiator_a1zqyv",
+      "type": "lk.tech.tgcontrollerbot.model.UserData_Instantiator_n5gg7r",
       "methods": [
         {
           "name": "<init>",
@@ -1516,13 +1608,17 @@
       "type": "lk.tech.tgcontrollerbot.requests.HttpRequests"
     },
     {
+      "type": "lk.tech.tgcontrollerbot.requests.TelegramHttpClient"
+    },
+    {
       "type": "lk.tech.tgcontrollerbot.services.BotMessageSender",
       "methods": [
         {
           "name": "<init>",
           "parameterTypes": [
             "org.telegram.telegrambots.meta.bots.AbsSender",
-            "lk.tech.tgcontrollerbot.services.UserDataService"
+            "lk.tech.tgcontrollerbot.services.UserDataService",
+            "lk.tech.tgcontrollerbot.requests.TelegramHttpClient"
           ]
         }
       ]
@@ -5318,6 +5414,9 @@
       "type": "org.springframework.web.reactive.function.client.DefaultWebClient"
     },
     {
+      "type": "org.springframework.web.reactive.function.client.ExchangeFilterFunction"
+    },
+    {
       "type": "org.springframework.web.reactive.function.client.WebClient"
     },
     {
@@ -5656,49 +5755,7 @@
       "type": "org.telegram.telegrambots.meta.api.objects.Dice"
     },
     {
-      "type": "org.telegram.telegrambots.meta.api.objects.Document",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        },
-        {
-          "name": "setFileId",
-          "parameterTypes": [
-            "java.lang.String"
-          ]
-        },
-        {
-          "name": "setFileName",
-          "parameterTypes": [
-            "java.lang.String"
-          ]
-        },
-        {
-          "name": "setFileSize",
-          "parameterTypes": [
-            "java.lang.Long"
-          ]
-        },
-        {
-          "name": "setFileUniqueId",
-          "parameterTypes": [
-            "java.lang.String"
-          ]
-        },
-        {
-          "name": "setMimeType",
-          "parameterTypes": [
-            "java.lang.String"
-          ]
-        },
-        {
-          "name": "setThumbnail",
-          "parameterTypes": [
-            "org.telegram.telegrambots.meta.api.objects.PhotoSize"
-          ]
-        }
-      ]
+      "type": "org.telegram.telegrambots.meta.api.objects.Document"
     },
     {
       "type": "org.telegram.telegrambots.meta.api.objects.ExternalReplyInfo"
@@ -5738,12 +5795,6 @@
           ]
         },
         {
-          "name": "setDocument",
-          "parameterTypes": [
-            "org.telegram.telegrambots.meta.api.objects.Document"
-          ]
-        },
-        {
           "name": "setEntities",
           "parameterTypes": [
             "java.util.List"
@@ -5753,12 +5804,6 @@
           "name": "setFrom",
           "parameterTypes": [
             "org.telegram.telegrambots.meta.api.objects.User"
-          ]
-        },
-        {
-          "name": "setMediaGroupId",
-          "parameterTypes": [
-            "java.lang.String"
           ]
         },
         {
@@ -5806,43 +5851,7 @@
       ]
     },
     {
-      "type": "org.telegram.telegrambots.meta.api.objects.PhotoSize",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        },
-        {
-          "name": "setFileId",
-          "parameterTypes": [
-            "java.lang.String"
-          ]
-        },
-        {
-          "name": "setFileSize",
-          "parameterTypes": [
-            "java.lang.Integer"
-          ]
-        },
-        {
-          "name": "setFileUniqueId",
-          "parameterTypes": [
-            "java.lang.String"
-          ]
-        },
-        {
-          "name": "setHeight",
-          "parameterTypes": [
-            "java.lang.Integer"
-          ]
-        },
-        {
-          "name": "setWidth",
-          "parameterTypes": [
-            "java.lang.Integer"
-          ]
-        }
-      ]
+      "type": "org.telegram.telegrambots.meta.api.objects.PhotoSize"
     },
     {
       "type": "org.telegram.telegrambots.meta.api.objects.ProximityAlertTriggered"
@@ -6008,15 +6017,6 @@
     },
     {
       "type": "org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery"
-    },
-    {
-      "type": "org.telegram.telegrambots.meta.api.objects.media.serialization.InputMediaSerializer",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
     },
     {
       "type": "org.telegram.telegrambots.meta.api.objects.messageorigin.serialization.MessageOriginDeserializer",
@@ -6223,6 +6223,15 @@
       "type": "reactor.core.publisher.FluxIterable$IterableSubscription"
     },
     {
+      "type": "reactor.core.publisher.FluxLimitRequest$FluxLimitRequestSubscriber"
+    },
+    {
+      "type": "reactor.core.publisher.FluxMergeSequential$MergeSequentialInner"
+    },
+    {
+      "type": "reactor.core.publisher.FluxMergeSequential$MergeSequentialMain"
+    },
+    {
       "type": "reactor.core.publisher.FluxOnErrorReturn$ReturnSubscriber"
     },
     {
@@ -6230,9 +6239,6 @@
     },
     {
       "type": "reactor.core.publisher.FluxPublish$PublishSubscriber"
-    },
-    {
-      "type": "reactor.core.publisher.FluxPublishOn$PublishOnSubscriber"
     },
     {
       "type": "reactor.core.publisher.FluxRange$RangeSubscription"
@@ -6247,6 +6253,9 @@
       "type": "reactor.core.publisher.FluxSubscribeOn$SubscribeOnSubscriber"
     },
     {
+      "type": "reactor.core.publisher.FluxSubscribeOnCallable$CallableSubscribeOnSubscription"
+    },
+    {
       "type": "reactor.core.publisher.FluxSubscribeOnValue$ScheduledScalar"
     },
     {
@@ -6254,6 +6263,9 @@
     },
     {
       "type": "reactor.core.publisher.FluxTimeout$TimeoutTimeoutSubscriber"
+    },
+    {
+      "type": "reactor.core.publisher.FluxUsing$UsingConditionalSubscriber"
     },
     {
       "type": "reactor.core.publisher.FluxUsing$UsingFuseableSubscriber"
@@ -6394,6 +6406,9 @@
       "type": "reactor.netty.channel.FluxReceive"
     },
     {
+      "type": "reactor.netty.channel.MonoSendMany$SendManyInner"
+    },
+    {
       "type": "reactor.netty.http.Cookies"
     },
     {
@@ -6425,6 +6440,9 @@
     },
     {
       "type": "reactor.netty.resources.DefaultPooledConnectionProvider$PooledConnectionAllocator$PooledConnectionInitializer"
+    },
+    {
+      "type": "reactor.netty.tcp.SslProvider$SslReadHandler"
     },
     {
       "type": "reactor.netty.transport.ServerTransport$Acceptor"
@@ -6598,6 +6616,24 @@
     },
     {
       "type": "sun.security.provider.DSA$SHA256withDSA",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.security.provider.JavaKeyStore$DualFormatJKS",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.security.provider.JavaKeyStore$JKS",
       "methods": [
         {
           "name": "<init>",
@@ -6943,6 +6979,16 @@
     {
       "type": {
         "proxy": [
+          "lk.tech.tgcontrollerbot.requests.TelegramHttpClient",
+          "org.springframework.aop.SpringProxy",
+          "org.springframework.aop.framework.Advised",
+          "org.springframework.core.DecoratingProxy"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
           "org.springframework.boot.context.properties.ConfigurationProperties"
         ]
       }
@@ -6987,6 +7033,16 @@
         "proxy": [
           "org.springframework.web.service.annotation.HttpExchange"
         ]
+      }
+    },
+    {
+      "type": {
+        "lambda": {
+          "declaringClass": "lk.tech.tgcontrollerbot.configuration.ServerConfiguration",
+          "interfaces": [
+            "org.springframework.web.reactive.function.client.ExchangeFilterFunction"
+          ]
+        }
       }
     },
     {
@@ -7815,6 +7871,9 @@
     },
     {
       "glob": "org/springframework/http/codec/CodecConfigurer.properties"
+    },
+    {
+      "glob": "org/springframework/http/mime.types"
     },
     {
       "glob": "org/springframework/transaction/annotation/AbstractTransactionManagementConfiguration.class"
