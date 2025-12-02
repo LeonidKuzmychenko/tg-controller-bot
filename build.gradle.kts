@@ -1,6 +1,6 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.5.7"
+    id("org.springframework.boot") version "3.5.8"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.graalvm.buildtools.native") version "0.11.3"
 }
@@ -54,20 +54,7 @@ graalvmNative {
             buildArgs.add("--enable-url-protocols=http,https,dns")
 
             // ===== Netty — строго initialize-at-run-time =====
-            listOf(
-                "io.netty",
-                "io.netty.buffer",
-                "io.netty.channel",
-                "io.netty.handler",
-                "io.netty.resolver",
-                "io.netty.resolver.dns",
-                "io.netty.transport",
-                "io.netty.util",
-                "io.netty.util.internal",
-                "org.springframework.core.io.buffer"
-            ).forEach { pkg ->
-                buildArgs.add("--initialize-at-run-time=$pkg")
-            }
+            buildArgs.add("--initialize-at-run-time=io.netty")
 
             // ===== Security / Crypto =====
             buildArgs.add("--enable-all-security-services")

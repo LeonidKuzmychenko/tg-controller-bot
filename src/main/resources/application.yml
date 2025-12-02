@@ -31,5 +31,5 @@ server:
   port: 8282
 
 url:
-  socket: http://host.docker.internal:8484/
+  socket: http://tg-controller-socket:8484/
   telegram: https://api.telegram.org/bot

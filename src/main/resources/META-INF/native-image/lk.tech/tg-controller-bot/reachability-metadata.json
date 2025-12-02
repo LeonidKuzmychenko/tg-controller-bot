@@ -22,15 +22,6 @@
       "type": "ch.qos.logback.classic.LoggerContext"
     },
     {
-      "type": "ch.qos.logback.classic.joran.SerializedModelConfigurator",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
       "type": "ch.qos.logback.classic.spi.LogbackServiceProvider"
     },
     {
@@ -915,15 +906,6 @@
       "type": "java.lang.reflect.AnnotatedElement"
     },
     {
-      "type": "java.lang.reflect.GenericArrayType",
-      "methods": [
-        {
-          "name": "getGenericComponentType",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
       "type": "java.lang.reflect.GenericDeclaration"
     },
     {
@@ -931,10 +913,6 @@
       "methods": [
         {
           "name": "getActualTypeArguments",
-          "parameterTypes": []
-        },
-        {
-          "name": "getOwnerType",
           "parameterTypes": []
         },
         {
@@ -961,15 +939,6 @@
     },
     {
       "type": "java.lang.reflect.Type"
-    },
-    {
-      "type": "java.lang.reflect.TypeVariable",
-      "methods": [
-        {
-          "name": "getBounds",
-          "parameterTypes": []
-        }
-      ]
     },
     {
       "type": "java.lang.reflect.WildcardType",
@@ -1653,7 +1622,7 @@
       ]
     },
     {
-      "type": "lk.tech.tgcontrollerbot.model.UserData_Accessor_xbrq3l",
+      "type": "lk.tech.tgcontrollerbot.model.UserData_Accessor_xhw8la",
       "methods": [
         {
           "name": "<init>",
@@ -1664,7 +1633,7 @@
       ]
     },
     {
-      "type": "lk.tech.tgcontrollerbot.model.UserData_Instantiator_xbrq3l",
+      "type": "lk.tech.tgcontrollerbot.model.UserData_Instantiator_xhw8la",
       "methods": [
         {
           "name": "<init>",
@@ -4802,13 +4771,7 @@
       "type": "org.springframework.data.r2dbc.mapping.event.AfterConvertCallback"
     },
     {
-      "type": "org.springframework.data.r2dbc.mapping.event.AfterSaveCallback"
-    },
-    {
       "type": "org.springframework.data.r2dbc.mapping.event.BeforeConvertCallback"
-    },
-    {
-      "type": "org.springframework.data.r2dbc.mapping.event.BeforeSaveCallback"
     },
     {
       "type": "org.springframework.data.r2dbc.repository.R2dbcRepository"
@@ -7064,15 +7027,6 @@
     {
       "type": {
         "proxy": [
-          "java.lang.reflect.GenericArrayType",
-          "org.springframework.core.SerializableTypeWrapper$SerializableTypeProxy",
-          "java.io.Serializable"
-        ]
-      }
-    },
-    {
-      "type": {
-        "proxy": [
           "java.lang.reflect.ParameterizedType",
           "org.springframework.core.SerializableTypeWrapper$SerializableTypeProxy",
           "java.io.Serializable"
@@ -7469,16 +7423,10 @@
       "glob": "logback-test.groovy"
     },
     {
-      "glob": "logback-test.scmo"
-    },
-    {
       "glob": "logback-test.xml"
     },
     {
       "glob": "logback.groovy"
-    },
-    {
-      "glob": "logback.scmo"
     },
     {
       "glob": "logback.xml"

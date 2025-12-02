@@ -10,11 +10,11 @@ REM ==== НАСТРОЙКИ (менять здесь!) ========================
 REM Путь к JAVA (можешь указать путь к GraalVM java.exe)
 set "JAVA_BIN=C:\Java\graalvm-jdk-25.0.1+8.1\bin\java.exe"
 
-REM Путь к JAR файлу твоего бота
-set "APP_JAR=C:\IntelijIdeaProjects\learn-tg-bot\build\libs\tg-controller-bot-0.0.1-SNAPSHOT.jar"
+REM Путь к JAR файлу твоего бота (bootJar)
+set "APP_JAR=build\libs\tg-controller-bot-0.0.1-SNAPSHOT.jar"
 
 REM Папка куда агент сохранит конфиги
-set "OUT_DIR=C:\IntelijIdeaProjects\learn-tg-bot\src\main\resources\META-INF\native-image\lk.tech\tg-controller-bot"
+set "OUT_DIR=src\main\resources\META-INF\native-image\lk.tech\tg-controller-bot"
 
 REM ========================================
 

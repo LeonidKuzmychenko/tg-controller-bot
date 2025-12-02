@@ -89,7 +89,7 @@ public class CursorTelegramBot extends TelegramLongPollingBot {
             return userDataService.updateState(chatId, newKey, UserState.COMPLETED)
                     .doOnSuccess(u ->
                             SendMessages.builder(chatId)
-                                    .text("Отлично! 🎉 Ваш компьютер подключён.\nТеперь команды доступны: /help")
+                                    .text("Отлично! 🎉 Ваш компьютер подключён.\nПосмотреть доступные команды: /help")
                                     .send(this)
                     )
                     .then();
@@ -106,7 +106,7 @@ public class CursorTelegramBot extends TelegramLongPollingBot {
                         .send(this);
             } else {
                 SendMessages.builder(chatId)
-                        .text("Вы уже подключены.\nКоманды: /help")
+                        .text("Ваш чат уже подключен к компьюетеру по ключу " + clientKey+".\nПосмотреть доступные команды: /help")
                         .send(this);
             }
             return Mono.empty();
@@ -170,7 +170,7 @@ public class CursorTelegramBot extends TelegramLongPollingBot {
         // 7️⃣ Неизвестная команда
         // ---------------------------
         SendMessages.builder(chatId)
-                .text("Неизвестная команда.\nСписок: /help")
+                .text("Неизвестная команда.\nПосмотреть доступные команды: /help")
                 .send(this);
         return Mono.empty();
     }
